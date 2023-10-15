@@ -22,4 +22,10 @@ public class Player : MonoBehaviour
         }
         
     }
+    //Para colisão com o objeto
+    private void OnCollisionEnter(Collision collision){
+        if(collision.gameObject.tag == "Hazard"){
+            Destroy(gameObject);
+        }
+    }
 }
