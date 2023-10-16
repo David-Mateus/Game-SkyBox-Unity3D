@@ -6,12 +6,28 @@ public class GameManager : MonoBehaviour
 {   
     public GameObject hazardPrefab;
     public int maxHazards = 3;
+    public TMPro.TextMeshPro scoreText;
+
+    private int score = 0;
+    private float timer;
+    private static bool gameOver;
+
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(SpawnHazards());
     }
-
+    private void Update(){
+        if(gameOver){
+            return;
+        }
+        timer += Time.deltaTime;
+       if(timer >= 1f){
+           score++;
+           scoreText.text = score.ToString();
+           timer = 0;
+       }
+    }
     private IEnumerator SpawnHazards()
     {
         var hazardToSpawn = Random.Range(1, maxHazards);
@@ -25,5 +41,9 @@ public class GameManager : MonoBehaviour
         
         yield return new WaitForSeconds(1f);
         yield return SpawnHazards();
+    }
+    public static void GameOver(){
+        gameOver = true;
+        // scoreText.text = "Game Over";
     }
 }
