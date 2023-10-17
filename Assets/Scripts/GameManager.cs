@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public GameObject hazardPrefab;
     public int maxHazards = 3;
     public TMPro.TextMeshPro scoreText;
-
+    
     private int score = 0;
     private float timer;
     private static bool gameOver;
@@ -17,7 +17,14 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(SpawnHazards());
     }
+
     private void Update(){
+        if(Input.GetKeyDown(KeyCode.Escape)){
+           PausarJogo();
+        }
+        if(Input.GetKeyDown(KeyCode.R)){
+           ReniciarJogo();
+        }
         if(gameOver){
             return;
         }
@@ -28,6 +35,7 @@ public class GameManager : MonoBehaviour
            timer = 0;
        }
     }
+
     private IEnumerator SpawnHazards()
     {
         var hazardToSpawn = Random.Range(1, maxHazards);
@@ -44,6 +52,18 @@ public class GameManager : MonoBehaviour
     }
     public static void GameOver(){
         gameOver = true;
-        // scoreText.text = "Game Over";
     }
+    
+    public void PausarJogo(){
+        if(Time.timeScale == 1){
+            Time.timeScale = 0;
+        }else{
+            Time.timeScale = 1;
+        }
+    }
+    public  void ReniciarJogo(){
+        Application.LoadLevel(Application.loadedLevel);
+        score++;
+    }
+    
 }

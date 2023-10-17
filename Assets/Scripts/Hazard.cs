@@ -5,6 +5,7 @@ using UnityEngine;
 public class Hazard : MonoBehaviour
 {
     Vector3 rotation;
+    public ParticleSystem breakingEffect;
     private void Start() 
     {
         //Rotacionar o objeto
@@ -21,6 +22,8 @@ public class Hazard : MonoBehaviour
         //Destruir ao tocar no solo
         if(!collision.gameObject.CompareTag("Hazard")){
             Destroy(gameObject);
+            Instantiate(breakingEffect, transform.position, Quaternion.identity);
+
         }
         
     }

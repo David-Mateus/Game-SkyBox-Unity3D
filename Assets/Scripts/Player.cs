@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public float forceMultiplier = 6f;
     public float maximumVelocity = 4f;
+    public ParticleSystem deathParticles;
     private Rigidbody rb;
     
     /// Awake is called when the script instance is being loaded.
@@ -39,7 +40,9 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter(Collision collision){
         if(collision.gameObject.tag == "Hazard"){
             GameManager.GameOver();
+            Instantiate(deathParticles, transform.position, Quaternion.identity);
             Destroy(gameObject);
+            
         }
     }
 }
