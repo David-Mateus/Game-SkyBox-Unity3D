@@ -44,9 +44,10 @@ public class Player : MonoBehaviour
     //Para colisão com o objeto
     private void OnCollisionEnter(Collision collision){
         if(collision.gameObject.tag == "Hazard"){
-            GameManager.GameOver();
+            GameManager.Instance.GameOver();
+            gameObject.SetActive(false);
             Instantiate(deathParticles, transform.position, Quaternion.identity);
-            Destroy(gameObject); 
+            
         }
     }
     //Mudar de cor o player

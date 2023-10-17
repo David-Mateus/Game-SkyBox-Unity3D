@@ -9,20 +9,32 @@ public class GameManager : MonoBehaviour
     public int maxHazards = 3;
     public TMPro.TextMeshPro scoreText;
     public Image backgrundMenu;
+    public GameObject player;
     
     private int score = 0;
     private float timer;
-    private static bool gameOver;
+    private Coroutine hazardsCoroutine;
+    private  bool gameOver;
     private static GameManager instance;
     public static GameManager Instance => instance;
-    public void Enable(){
-        gameObject.SetActive(true);
-    }
+    public GameObject gameOverMenu;
+    
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
-        StartCoroutine(SpawnHazards());
+        
+    }
+
+    private void OnEnable() {
+        player.SetActive(true);
+        gameOver = false;
+        score = 0;
+        timer = 0;
+        hazardsCoroutine = StartCoroutine(SpawnHazards());
+    }
+    public void Enable(){
+        gameObject.SetActive(true);
     }
 
     private void Update(){
@@ -55,8 +67,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         yield return SpawnHazards();
     }
-    public static void GameOver(){
+    public  void GameOver(){
+        StopCoroutine(hazardsCoroutine);
         gameOver = true;
+        gameObject.SetActive(false);
+        gameOverMenu.SetActive(true);
+        
         
     }
     
