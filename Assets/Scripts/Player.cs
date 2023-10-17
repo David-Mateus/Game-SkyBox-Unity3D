@@ -7,9 +7,8 @@ public class Player : MonoBehaviour
     public float forceMultiplier = 6f;
     public float maximumVelocity = 4f;
     public ParticleSystem deathParticles;
+    private MeshRenderer meshRenderer;
     private Rigidbody rb;
-    
-    /// Awake is called when the script instance is being loaded.
     
     /// Awake is called when the script instance is being loaded.
     /// </summary>
@@ -24,16 +23,22 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        meshRenderer = GetComponent<MeshRenderer>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(GameManager.Instance == null){
+            return;
+        }
         //variavel criada para movimentação x
         var horizontalInput = Input.GetAxis("Horizontal");
         if(rb.velocity.magnitude <= maximumVelocity){
             rb.AddForce(new Vector3(horizontalInput * forceMultiplier * Time.deltaTime, 0 , 0));
         }
+        ChangeColor();
         
     }
     //Para colisão com o objeto
@@ -41,8 +46,15 @@ public class Player : MonoBehaviour
         if(collision.gameObject.tag == "Hazard"){
             GameManager.GameOver();
             Instantiate(deathParticles, transform.position, Quaternion.identity);
-            Destroy(gameObject);
-            
+            Destroy(gameObject); 
         }
     }
+    //Mudar de cor o player
+    public void ChangeColor(){
+        if(Input.GetKeyDown(KeyCode.C)){
+            meshRenderer.material.color = Random.ColorHSV();
+        }
+        
+    }
+   
 }

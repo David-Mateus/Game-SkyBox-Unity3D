@@ -1,20 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {   
     public GameObject hazardPrefab;
     public int maxHazards = 3;
     public TMPro.TextMeshPro scoreText;
+    public Image backgrundMenu;
     
     private int score = 0;
     private float timer;
     private static bool gameOver;
-
+    private static GameManager instance;
+    public static GameManager Instance => instance;
+    public void Enable(){
+        gameObject.SetActive(true);
+    }
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
         StartCoroutine(SpawnHazards());
     }
 
@@ -22,9 +29,7 @@ public class GameManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Escape)){
            PausarJogo();
         }
-        if(Input.GetKeyDown(KeyCode.R)){
-           ReniciarJogo();
-        }
+        
         if(gameOver){
             return;
         }
@@ -52,18 +57,18 @@ public class GameManager : MonoBehaviour
     }
     public static void GameOver(){
         gameOver = true;
+        
     }
     
     public void PausarJogo(){
         if(Time.timeScale == 1){
             Time.timeScale = 0;
+            backgrundMenu.gameObject.SetActive(true);
         }else{
             Time.timeScale = 1;
+            backgrundMenu.gameObject.SetActive(false);
         }
     }
-    public  void ReniciarJogo(){
-        Application.LoadLevel(Application.loadedLevel);
-        score++;
-    }
+    
     
 }
